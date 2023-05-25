@@ -21,95 +21,81 @@ the granularity with a single variable.
 Example: d2printf("Current program text %02x %02x\n", text[pc] , text[pc+1]);
 */
 #include "util.h"
-
+#include "stack.h"
+#include "io.h"
+#include "execution.h"
 
 // see ijvm.h for descriptions of the below functions
+struct block
+{
+  uint32_t size;
+  byte_t* data;
+};
 
-FILE *in;   // use fgetc(in) to get a character from in.
-            // This will return EOF if no char is available.
-FILE *out;  // use for example fprintf(out, "%c", value); to print value to out
+struct block cons;
+struct block text;
 
-void set_input(FILE *fp) 
-{ 
-  in = fp; 
+struct block read_block(FILE* fp){
+  struct block bl;
+  fread(&bl.size, sizeof(uint32_t), 1, fp);
+  fread(&bl.size, sizeof(uint32_t), 1, fp);
+  bl.size = swap_uint32(bl.size);
+
+  bl.data = malloc(bl.size);
+  fread(bl.data, sizeof(byte_t), bl.size, fp);
+  return bl;
 }
 
-void set_output(FILE *fp) 
-{ 
-  out = fp; 
+void destroy_block(struct block* bl){
+  free(bl->data);
+  bl->data = NULL;
+  bl->size = 0;
 }
+
 
 int init_ijvm(char *binary_path) 
 {
-  in = stdin;
-  out = stdout;
-  // TODO: implement me
-  return -1;
+  set_input(stdin);
+  set_output(stdout);
+  set_program_counter(0);
+
+  uint32_t magic_num;
+  FILE* fp = fopen(binary_path, "r");
+  fread(&magic_num, sizeof(uint32_t), 1, fp);
+  
+  int res = -1;
+  if(swap_uint32(magic_num) == MAGIC_NUMBER){
+    res = 0;
+
+    cons = read_block(fp);
+    text = read_block(fp);
+
+    create_stack();
+  }
+
+  fclose(fp);
+  return res;
 }
 
 void destroy_ijvm(void) 
 {
-  // TODO: implement me
+  destroy_block(&cons);
+  destroy_block(&text);
+  destroy_stack();
 }
 
 byte_t *get_text(void) 
 {
-  // TODO: implement me
-  return NULL;
+  return text.data;
 }
 
 unsigned int get_text_size(void) 
 {
-  // TODO: implement me
-  return 0;
+  return text.size;
 }
 
 word_t get_constant(int i) 
 {
-  // TODO: implement me
-  return 0;
+  return read_uint32_t(&cons.data[i * sizeof(word_t)]);
 }
 
-unsigned int get_program_counter(void) 
-{
-  // TODO: implement me
-  return 0;
-}
-
-word_t tos(void) 
-{
-  // this operation should NOT pop (remove top element from stack)
-  // TODO: implement me
-  return -1;
-}
-
-bool finished(void) 
-{
-  // TODO: implement me
-  return false;
-}
-
-word_t get_local_variable(int i) 
-{
-  // TODO: implement me
-  return 0;
-}
-
-bool step(void) 
-{
-  // TODO: implement me
-  return true;
-}
-
-void run(void) 
-{
-  while (!finished()) 
-  {
-    step();
-  }
-}
-
-byte_t get_instruction(void) 
-{ 
-  return get_text()[get_program_counter()]; 
-}
