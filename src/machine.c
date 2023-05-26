@@ -57,7 +57,7 @@ int init_ijvm(char *binary_path)
 {
   set_input(stdin);
   set_output(stdout);
-  set_program_counter(0);
+  reset_program_counter();
 
   uint32_t magic_num;
   FILE* fp = fopen(binary_path, "r");

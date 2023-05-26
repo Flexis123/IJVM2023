@@ -2,6 +2,7 @@
 #include "execution.h"
 #include "stack_operations.h"
 #include "util.h"
+#include "branch_operations.h"
 
 static unsigned int pc = 0;
 static bool err_flag = false;
@@ -11,12 +12,15 @@ unsigned int get_program_counter(void)
   return pc;
 }
 
-void set_program_counter(unsigned int _pc){
-  pc = _pc;
+void reset_program_counter(){
+  pc = 0;
   err_flag = false;
 }
 
-
+void offset_pc(int16_t offset){
+  pc += offset;
+}
+ 
 bool finished(void) 
 {
   return err_flag || pc >= get_text_size();
@@ -69,19 +73,32 @@ bool step(void)
     out();
     break;
 
+  case OP_GOTO:
+    _goto(read_uint16_t(get_text() + pc + 1));
+    break;
+
+  case OP_IFEQ:
+    ifeq(read_uint16_t(get_text() + pc + 1));
+    break;
+
+  case OP_IFLT:
+    iflt(read_uint16_t(get_text() + pc + 1));
+    break;
+
+  case OP_IF_ICMPEQ:
+    if_icmpeq(read_uint16_t(get_text() + pc + 1));
+    break;
+
   default:
     err_flag = true; 
     break;
   }
-  pc++;
   return true;
 }
 
 void run(void) 
 {
-  while (!finished()) {
-    step();
-  }
+  while (!finished()) step();
 }
 
 byte_t get_instruction(void) 

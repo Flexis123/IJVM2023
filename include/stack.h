@@ -15,6 +15,8 @@ struct stack prog_stack;
 
 void create_stack();
 void destroy_stack();
+word_t wpop();
+void wpush(word_t w);
 
 
 #endif

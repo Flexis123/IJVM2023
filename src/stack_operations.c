@@ -6,77 +6,59 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-
-word_t tos(void){
-    return prog_stack.data[prog_stack.sp];
-}
-
-void wpush(word_t w){
-    if(prog_stack.size <= prog_stack.sp + 1){
-        prog_stack.size += prog_stack.size;
-        prog_stack.data = realloc(prog_stack.data, prog_stack.size);
-    }
-
-    prog_stack.sp++;
-    prog_stack.data[prog_stack.sp] = w;
-}
+#include "execution.h"
 
 void bipush(int8_t b){
     wpush(b);
+    offset_pc(2);
 }
 
 void dup(){
     bipush(tos());
+    offset_pc(1);
 }
 
 void pop(){
-    if(prog_stack.sp > -1){
-        prog_stack.sp--;
-
-        int new_size = prog_stack.sp + 1;
-        if(new_size % INIT_ST_SIZE == 0){
-            prog_stack.size = new_size;
-            prog_stack.data = realloc(prog_stack.data, prog_stack.size);
-        }
-    }
-}
-
-word_t wpop(){
-    word_t t = tos();
-    pop();
-    return t;
+    wpop();
+    offset_pc(1);
 }
 
 void swap(){
     word_t aux = prog_stack.data[prog_stack.sp - 1];
     prog_stack.data[prog_stack.sp - 1] = tos();
     prog_stack.data[prog_stack.sp] = aux;
+    offset_pc(1);
 }
 
 void iand(){
     wpush(wpop() & wpop());
+    offset_pc(1);
 }
 
 void iadd(){
     wpush(wpop() + wpop());
+    offset_pc(1);
 }
 
 void ior(){
     wpush(wpop() | wpop());
+    offset_pc(1);
 }
 
 void isub(){
     word_t rhs = wpop();
     word_t lhs = wpop();
     wpush(lhs - rhs);
+    offset_pc(1);
 }
 
 void in(){
     byte_t b = fgetc(get_input());
     bipush(b);
+    offset_pc(1);
 }
 
 void out(){
     fprintf(get_output(), "%c", wpop());
+    offset_pc(1);
 }

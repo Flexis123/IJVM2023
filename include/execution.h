@@ -1,6 +1,9 @@
 #ifndef EXECUTION_H
 #define EXECUTION_H
 
-void set_program_counter(unsigned int pc);
+#include <stdint.h>
+
+void reset_program_counter();
+void offset_pc(int16_t offset);
 
 #endif
