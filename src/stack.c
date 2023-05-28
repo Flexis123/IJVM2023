@@ -39,7 +39,7 @@ word_t wpop(){
         prog_stack.sp -= 1;
 
         int new_size = prog_stack.sp + 1;
-        if(new_size % INIT_ST_SIZE == 0){
+        if(new_size != 0 && new_size % INIT_ST_SIZE == 0){
             prog_stack.size = new_size;
             prog_stack.data = realloc(prog_stack.data, prog_stack.size);
         }

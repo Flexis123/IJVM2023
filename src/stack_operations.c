@@ -8,57 +8,57 @@
 #include <stdlib.h>
 #include "execution.h"
 
-void bipush(int8_t b){
+int16_t bipush(int8_t b){
     wpush(b);
-    offset_pc(2);
+    return 2;
 }
 
-void dup(){
+int16_t dup(){
     bipush(tos());
-    offset_pc(1);
+    return 1;
 }
 
-void pop(){
+int16_t pop(){
     wpop();
-    offset_pc(1);
+    return 1;
 }
 
-void swap(){
+int16_t swap(){
     word_t aux = prog_stack.data[prog_stack.sp - 1];
     prog_stack.data[prog_stack.sp - 1] = tos();
     prog_stack.data[prog_stack.sp] = aux;
-    offset_pc(1);
+    return 1;
 }
 
-void iand(){
+int16_t iand(){
     wpush(wpop() & wpop());
-    offset_pc(1);
+    return 1;
 }
 
-void iadd(){
+int16_t iadd(){
     wpush(wpop() + wpop());
-    offset_pc(1);
+    return 1;
 }
 
-void ior(){
+int16_t ior(){
     wpush(wpop() | wpop());
-    offset_pc(1);
+    return 1;
 }
 
-void isub(){
+int16_t isub(){
     word_t rhs = wpop();
     word_t lhs = wpop();
     wpush(lhs - rhs);
-    offset_pc(1);
+    return 1;
 }
 
-void in(){
+int16_t in(){
     byte_t b = fgetc(get_input());
     bipush(b);
-    offset_pc(1);
+    return 1;
 }
 
-void out(){
+int16_t out(){
     fprintf(get_output(), "%c", wpop());
-    offset_pc(1);
+    return 1;
 }

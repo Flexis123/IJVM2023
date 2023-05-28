@@ -3,9 +3,8 @@
 
 #include <stdint.h>
 
-void _goto(int16_t offset);
-void ifeq(int16_t offset);
-void iflt(int16_t offset);
-void if_icmpeq(int16_t offset);
+int16_t ifeq(int16_t offset);
+int16_t iflt(int16_t offset);
+int16_t if_icmpeq(int16_t offset);
 
 #endif

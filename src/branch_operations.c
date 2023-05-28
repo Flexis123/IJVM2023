@@ -3,21 +3,17 @@
 #include "execution.h"
 #include "stack.h"
 
-void _goto(int16_t offset){
-    offset_pc(offset);
+int16_t ifeq(int16_t offset){
+    if(wpop() == 0) return offset;
+    else return 3;
 }
 
-void ifeq(int16_t offset){
-    if(wpop() == 0) offset_pc(offset);
-    else offset_pc(3);
+int16_t iflt(int16_t offset){
+    if(wpop() < 0) return offset;
+    else return 3;
 }
 
-void iflt(int16_t offset){
-    if(wpop() < 0) offset_pc(offset);
-    else offset_pc(3);
-}
-
-void if_icmpeq(int16_t offset){
-    if(wpop() == wpop()) offset_pc(offset);
-    else offset_pc(3);
+int16_t if_icmpeq(int16_t offset){
+    if(wpop() == wpop()) return offset;
+    else return 3;
 }

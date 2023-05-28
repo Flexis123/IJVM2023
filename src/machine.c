@@ -48,7 +48,6 @@ struct block read_block(FILE* fp){
 
 void destroy_block(struct block* bl){
   free(bl->data);
-  bl->data = NULL;
   bl->size = 0;
 }
 

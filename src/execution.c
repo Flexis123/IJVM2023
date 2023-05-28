@@ -28,71 +28,75 @@ bool finished(void)
 
 bool step(void) 
 {
+  int16_t pc_offset = 0;
   switch (get_instruction())
   {
   case OP_BIPUSH:
-    bipush(get_text()[pc + 1]);
+    pc_offset = bipush(get_text()[pc + 1]);
     break;
 
   case OP_DUP:
-    dup();
+    pc_offset = dup();
     break;
 
   case OP_IADD:
-    iadd();
+    pc_offset = iadd();
     break;
 
   case OP_IAND:
-    iand();
+    pc_offset = iand();
     break;
 
   case OP_IOR:
-    ior();
+    pc_offset = ior();
     break;
 
   case OP_ISUB:
-    isub();
+    pc_offset = isub();
     break;
 
   case OP_NOP:
+    pc_offset = 1;
     break;
 
   case OP_POP:
-    pop();
+    pc_offset = pop();
     break;
 
   case OP_SWAP:
-    swap();
+    pc_offset = swap();
     break;
 
   case OP_IN:
-    in();
+    pc_offset = in();
     break;
 
   case OP_OUT:
-    out();
+    pc_offset = out();
     break;
 
   case OP_GOTO:
-    _goto(read_uint16_t(get_text() + pc + 1));
+    pc_offset = read_uint16_t(get_text() + pc + 1);
     break;
 
   case OP_IFEQ:
-    ifeq(read_uint16_t(get_text() + pc + 1));
+    pc_offset = ifeq(read_uint16_t(get_text() + pc + 1));
     break;
 
   case OP_IFLT:
-    iflt(read_uint16_t(get_text() + pc + 1));
+    pc_offset = iflt(read_uint16_t(get_text() + pc + 1));
     break;
 
   case OP_IF_ICMPEQ:
-    if_icmpeq(read_uint16_t(get_text() + pc + 1));
+    pc_offset = if_icmpeq(read_uint16_t(get_text() + pc + 1));
     break;
 
   default:
     err_flag = true; 
     break;
   }
+  pc += pc_offset;
+  
   return true;
 }
 
