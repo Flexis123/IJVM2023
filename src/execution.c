@@ -3,6 +3,7 @@
 #include "stack_operations.h"
 #include "util.h"
 #include "branch_operations.h"
+#include "var_and_const_operations.h"
 
 static unsigned int pc = 0;
 static bool err_flag = false;
@@ -25,6 +26,7 @@ bool finished(void)
 {
   return err_flag || pc >= get_text_size();
 }
+
 
 bool step(void) 
 {
@@ -89,6 +91,25 @@ bool step(void)
 
   case OP_IF_ICMPEQ:
     pc_offset = if_icmpeq(read_uint16_t(get_text() + pc + 1));
+    break;
+
+  case OP_LDC_W:
+    pc_offset = ldc_w(read_uint16_t(get_text() + pc + 1));
+    break;
+
+  case OP_ILOAD:
+    pc_offset = iload(read_uint16_t(get_text() + pc + 1));
+    break;
+
+  case OP_ISTORE:
+    pc_offset = istore(read_uint16_t(get_text() + pc + 1));
+    break;
+
+  case OP_IINC:
+    pc_offset = iinc(read_uint16_t(get_text() + pc + 1));
+    break;
+
+  case OP_WIDE:
     break;
 
   default:
