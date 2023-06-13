@@ -7,18 +7,23 @@
 
 void test_simple_bipush()
 {
+    fprintf(stderr, "loading ijvm\n");
     int res = init_ijvm("files/task2/TestBipush1.ijvm");
+    fprintf(stderr, "loaded ijvm\n");
     assert(res != -1);
 
     assert(get_program_counter() == 0);
     step();
     assert(get_program_counter() == 2);
     assert(tos() == 42); 
+
+    fprintf(stderr, "destroying ijvm\n");
     destroy_ijvm();
 }
 
 void test_signed_bipush()
 {
+     fprintf(stderr, "loading ijvm2\n");
     int res = init_ijvm("files/task2/TestBipush2.ijvm");
     assert(res != -1);
 

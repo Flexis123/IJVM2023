@@ -1,0 +1,9 @@
+help: print help on how to use the debugger
+file <binary>: load the specified binary
+run: run until the next breakpoint is encountered. If the program has already started, stop and start again.
+input <file>: set the IJVM input to contain contents of specified file
+break <addr>: set a breakpoint for instruction at address addr
+step: perform one instruction
+continue: continue executing until the next breakpoint
+info: show the local stack (in hexadecimal) and variables of the current frame
+backtrace: show a call stack of all frames (i.e., in which order methods have called each other and with what arguments)

@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
         {
             "name": "Build and Debug project",
             "type": "cppdbg",
@@ -13,6 +14,18 @@
             "cwd": "${workspaceFolder}",
             // "stopAtEntry": true,  // uncomment to automatically set breakpoint at start of main.
             "preLaunchTask": "Build ijvm",
+            "MIMode": "lldb"
+        },
+        {
+            "name": "Build and Debug debugger",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/debugger",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            // "stopAtEntry": true,  // uncomment to automatically set breakpoint at start of main.
+            "preLaunchTask": "Build debugger",
+            "MIMode": "lldb"
         },
         {
             "name": "Build and Debug test",
@@ -23,6 +36,7 @@
             // "stopAtEntry": true,  // uncomment to automatically set breakpoint at start of main.
             // "preLaunchTask": "Build all tests",
             "preLaunchTask": "Build test_${input:testID}",
+            "MIMode": "lldb"
         }
     ],
     "inputs": [
@@ -35,6 +49,7 @@
                 "test2",
                 "test3",
                 "test4",
+                "test5",
                 "testadvanced1",  
                 "testadvanced2",  
                 "testadvanced3", 

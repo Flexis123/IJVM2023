@@ -12,6 +12,16 @@
             "problemMatcher": []
         },
         {
+            "label": "Build debugger",
+            "type": "shell",
+            "command": "make debugger",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
             "label": "Build all tests",
             "type": "shell",
             "command": "make build_tests",

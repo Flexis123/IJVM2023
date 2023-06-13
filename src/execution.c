@@ -1,15 +1,12 @@
 #include "ijvm.h"
 #include "execution.h"
-#include "stack_operations.h"
+#include "operations.h"
 #include "util.h"
-#include "branch_operations.h"
-#include "var_and_const_operations.h"
 
 static unsigned int pc = 0;
 static bool err_flag = false;
 
-unsigned int get_program_counter(void) 
-{
+unsigned int get_program_counter(void) {
   return pc;
 }
 
@@ -26,7 +23,6 @@ bool finished(void)
 {
   return err_flag || pc >= get_text_size();
 }
-
 
 bool step(void) 
 {
@@ -98,35 +94,43 @@ bool step(void)
     break;
 
   case OP_ILOAD:
-    pc_offset = iload(read_uint16_t(get_text() + pc + 1));
+    pc_offset = iload(get_text() + pc + 1);
     break;
 
   case OP_ISTORE:
-    pc_offset = istore(read_uint16_t(get_text() + pc + 1));
+    pc_offset = istore(get_text() + pc + 1);
     break;
 
   case OP_IINC:
-    pc_offset = iinc(read_uint16_t(get_text() + pc + 1));
+    pc_offset = iinc(get_text() + pc + 1);
     break;
 
   case OP_WIDE:
+    pc += wide();
+    return step();
+
+  case OP_INVOKEVIRTUAL:
+    pc_offset = iinvokevirtual(read_uint16_t(get_text() + pc + 1));
+    break;
+
+  case OP_IRETURN:
+    pc_offset = ireturn();
     break;
 
   default:
     err_flag = true; 
-    break;
+    return false;
   }
+
   pc += pc_offset;
   
   return true;
 }
 
-void run(void) 
-{
+void run(void) {
   while (!finished()) step();
 }
 
-byte_t get_instruction(void) 
-{ 
+byte_t get_instruction(void) { 
   return get_text()[get_program_counter()]; 
 }

@@ -1,4 +1,4 @@
-#include "stack_operations.h"
+#include "operations.h"
 #include "ijvm.h"
 #include "stack.h"
 #include <stdlib.h>
@@ -14,7 +14,7 @@ int16_t bipush(int8_t b){
 }
 
 int16_t dup(){
-    bipush(tos());
+    wpush(tos());
     return 1;
 }
 
@@ -53,8 +53,8 @@ int16_t isub(){
 }
 
 int16_t in(){
-    byte_t b = fgetc(get_input());
-    bipush(b);
+    int b = fgetc(get_input());
+    bipush(b != EOF ? b : 0);
     return 1;
 }
 

@@ -201,7 +201,7 @@ void test_recursion(){
     while(get_instruction()!=OP_IAND){
         step();
     }
-    assert(tos() == 5050);
+    assert(tos() == 5050); //5050
     destroy_ijvm();
 }
 
@@ -227,7 +227,7 @@ int main()
     RUN_TEST(test_nested_invoke_simple);
     RUN_TEST(test_nested_invoke);
     RUN_TEST(test_nested_frame);
-    RUN_TEST(test_fib);
     RUN_TEST(test_recursion);
+    RUN_TEST(test_fib);
     return END_TEST();
 }
