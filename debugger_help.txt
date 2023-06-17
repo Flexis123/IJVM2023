@@ -7,3 +7,4 @@ step: perform one instruction
 continue: continue executing until the next breakpoint
 info: show the local stack (in hexadecimal) and variables of the current frame
 backtrace: show a call stack of all frames (i.e., in which order methods have called each other and with what arguments)
+q: quit IJVM debugger

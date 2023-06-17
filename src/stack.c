@@ -17,6 +17,7 @@ void increase_stack_pointer(uint16_t offset){
 }
 
 uint16_t get_frame_varc(){
+    if(fp + VARC_OFFSET > STACK_SIZE) return 0;
     return prog_stack.data[fp + VARC_OFFSET];
 }
 
