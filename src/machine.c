@@ -81,8 +81,6 @@ void destroy_ijvm(void)
   destroy_block(&cons);
   destroy_block(&text);
   destroy_stack();
-  fclose(get_input());
-  fclose(get_output());
 }
 
 byte_t *get_text(void) 
